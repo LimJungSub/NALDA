@@ -14,6 +14,7 @@ from backend.gps_backend import GpsBackend
 from backend.dock import DockManager, DockableWidget
 from backend.initializePortSelect import InitializePortSelect
 from backend.tooltip import TooltipManager
+from backend.sensor_manger import SensorManager
 from windows.location_history_window import LocationHistoryWindow
 from windows.manual_gps_window import ManualGpsWindow
 
@@ -73,6 +74,7 @@ class MainWindow(QMainWindow):
         self.dock_manager = DockManager(self)
         self.port_manager = InitializePortSelect()
         self.gps_backend = GpsBackend()
+        self.sensor_manager = SensorManager()
 
         # Port-GPS 백엔드 연결: 포트 연결 성공 시 GPS 모니터링 시작
         self.port_manager.connectionSuccessful.connect(self.gps_backend.start_gps_monitoring)
@@ -82,6 +84,7 @@ class MainWindow(QMainWindow):
         context.setContextProperty("dockManager", self.dock_manager)
         context.setContextProperty("initializePortSelect", self.port_manager)
         context.setContextProperty("gpsBackend", self.gps_backend)
+        context.setContextProperty("sensorManager", self.sensor_manager)
 
         self.setCentralWidget(central_widget)
 
@@ -133,7 +136,7 @@ class MainWindow(QMainWindow):
         """Index Page 창이 닫힐 때 변수를 None으로 초기화"""
         self.index_page_window = None
 
-    #refac: DockableWidget을 사용할때 gcs_backend같은 python 객체를 같이 넘겨줘야 python객체와 상호작용이 가능
+    # refac: DockableWidget을 사용할때 gcs_backend같은 python 객체를 같이 넘겨줘야 python객체와 상호작용이 가능
     def setup_dock_widgets(self):
         """도크 위젯들 설정"""
         # 상단 왼쪽 도크
@@ -150,7 +153,7 @@ class MainWindow(QMainWindow):
 
         # 하단 왼쪽 도크
         self.dock_bottom_left = QDockWidget("ND", self)
-        widget_bottom_left = DockableWidget("ND", "src/pages/flight/ND.qml", self.gps_backend, self.dock_manager) 
+        widget_bottom_left = DockableWidget("ND", "src/pages/flight/ND.qml", self.gps_backend, self.dock_manager)
         self.dock_bottom_left.setWidget(widget_bottom_left)
         self.addDockWidget(Qt.RightDockWidgetArea, self.dock_bottom_left)
 

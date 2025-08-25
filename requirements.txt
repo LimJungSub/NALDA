@@ -18,6 +18,5 @@ PySide6_Addons==6.9.1
 PySide6_Essentials==6.9.1
 pystyle==2.9
 python-dateutil==2.9.0.post0
-
 shiboken6==6.9.1
 six==1.16.0
